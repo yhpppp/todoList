@@ -15,21 +15,40 @@
     <button @click="btnClick">提交</button>
     <!-- 任务列表 -->
     <ul>
-      <li v-for="item in todoListData">{{item}}</li>
+      <!-- <li v-for="item in todoListData">{{item}}</li> -->
+      <todo-item v-bind:content="item" v-for="item in todoListData"></todo-item>
     </ul>
   </div>
 
 
   <script>
+    /* 全局组件 */
+    // Vue.component('TodoItem', {
+    //   props: ['content'],
+    //   template: "<li>{{content}}</li>"
+    // })
+      
+    /* 局部组件 */
+    var TodoItem = {
+      props: ['content'],
+      template: "<li>{{content}}</li>"
+    }
     var app = new Vue({
       el: '#app',
       data: {
         todoListData: [],
         inputValue: ''
       },
+      /* 局部组件注册 */
+      components: {
+        TodoItem
+      },
       methods: {
         /* 提交 */
-        btnClick: function (){
+        btnClick: function () {
+          if (this.inputValue === '') {
+            return false
+          }
           this.todoListData.push(this.inputValue)
           this.inputValue = ''
         }
